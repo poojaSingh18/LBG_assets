@@ -17,3 +17,5 @@ router.post('/modifyBgvDetails',function(req,res)
     //write code her-------------
   })
 })
+
+module.exports=router;

@@ -16,4 +16,6 @@ router.post('/modifyQualificationDetails',function(req,res)
   {
     //write code her-------------
   })
-})
+});
+
+module.exports=router;

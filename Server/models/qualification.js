@@ -1,6 +1,6 @@
 var mongoose=require('mongoose');
 
-var qualificationSchema=mongoose.Shcema({
+var qualificationSchema=mongoose.Schema({
     empNo: String,
   	techSkills: String,
   	digithonCleared:String,

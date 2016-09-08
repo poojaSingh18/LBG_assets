@@ -16,4 +16,6 @@ router.post('/modifyVisaDetails',function(req,res)
   {
     //write code her-------------
   })
-})
+});
+
+module.exports=router;

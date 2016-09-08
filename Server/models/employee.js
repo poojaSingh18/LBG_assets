@@ -1,6 +1,5 @@
 var mongoose=require('mongoose');
 
-
 var employeeSchema=new mongoose.Schema({
 empNo:String,
 empName:String,
@@ -9,7 +8,9 @@ empBand:String,
 location:String,
 mentor:String,
 proposedLocation:String,
+bgvStatus:String,
 travelStatus:String,
+visaStatus:String,
 deploymentReadyTimeFrame:String,
 criticality:String,
 visaExpiry:{type:Date},
@@ -28,12 +29,36 @@ theme:{
 }
 });
 
-employeeSchema.statics.addEmployee=function(data,callback)
+employeeSchema.statics.addEmployee=function(callback)
 {
   console.log("insdie model");
   this.create({
-    employeeId:data.employeeId,
-    employeeName:data.employeeName
+    empNo:'326433',
+    empName:'Vishnu Sampath',
+    allocationStatus: 'Extended in same project',
+    empBand:'Group L1',
+    location:'Bangalore',
+    mentor:'Gunjan Gupta',
+    proposedLocation:'UK',
+    bgvStatus:"completed",
+    travelStatus:'',
+    visaStatus:"initiated",
+    deploymentReadyTimeFrame:'',
+    criticality:'Y',
+    visaExpiry:'',
+    tower:'ADM',
+    l1_select:'Y',
+    theme:{
+        recommendedTheme:'',
+        recommendedSubTheme:'',
+        themeCell:{
+                   recommendedCellType:'',
+                   recommendedCell:'',
+                   recommendedRole:'',
+                   seedMember:''
+        }
+
+    }
   },
 function(err,data)
 {
@@ -41,5 +66,20 @@ function(err,data)
   callback(null,data);
 })
 };
+
+employeeSchema.statics.getEmployees=function(towerType,callback)
+{
+  this.find({
+    "tower":towerType
+  }).exec(function(err,data)
+{
+  if(!err)
+    callback(data);
+  else
+  callback(null);
+})
+}
+
+
 
 module.exports=mongoose.model('employee',employeeSchema,'employees');
