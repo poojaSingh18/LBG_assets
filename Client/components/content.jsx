@@ -2,11 +2,9 @@ import React from 'react';
 import {Toolbar, ToolbarGroup, ToolbarSeparator} from 'material-ui/Toolbar';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
-import {teal800, orange700} from 'material-ui/styles/colors';
-import AssetTable from './assetTable.jsx';
-import $ from 'jquery';
 import Dialog from 'material-ui/Dialog';
-import {orange800} from 'material-ui/styles/colors';
+import {teal800, orange700, green500} from 'material-ui/styles/colors';
+import AssetTable from './assetTable.jsx';
 import AssetInfoDialog from './assetInfo.jsx';
 
 
@@ -18,30 +16,47 @@ const customContentStyle = {
 export default class Content extends React.Component {
 
   constructor(props){
-  super(props);
-  this.state = {
-    assetList: [],
-    assetObject:{},
-    open:false
-  },
+    super(props);
+    this.state = {
+      assetList: [],
+      assetObject:{},
+      open:false
+    },
     this.handleTabClick = this.handleTabClick.bind(this);
     this.getAssetDetails = this.getAssetDetails.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleOnRequestClose = this.handleOnRequestClose.bind(this);
   };
 
   componentDidMount() {
-    console.log("componentWillUpdate");
-    $.get('/lbgRoute/getEmployees/ADM', function (result) {
-    this.setState({
-      assetList: result
-    })
-    }.bind(this));
+    this.handleTabClick('ADM');
   };
 
   handleTabClick(label){
     var towerType = label;
-    $.get('/lbgRoute/getEmployees/'+towerType, function(result){
+  /*
+    //insert details ---visa
+    $.post('/visaRoute/insertVisaDetails', function(result){
+      console.log("Data Inserted");
+      }.bind(this));
+
+      //insert details ---qualification
+      $.post('/qualificationRoute/insetQualificationDetails', function(result){
+        console.log("Data Inserted");
+        }.bind(this));
+
+        //insert details ---employee
+        $.post('/lbgRoute/getEmployees', function(result){
+          console.log("Data Inserted");
+          }.bind(this));
+
+          //insert details ---bgv
+          $.post('/bgvRoute/insertBgvDetails', function(result){
+            console.log("Data Inserted");
+            }.bind(this));
+
+  */
+
+   $.get('/lbgRoute/getEmployees/'+towerType, function(result){
       this.setState({
         assetList: result
       })
@@ -49,7 +64,7 @@ export default class Content extends React.Component {
   };
 
   getAssetDetails(asset){
-  console.log(asset);
+    console.log(asset);
     this.setState({
       assetObject: asset,
       open: true
@@ -57,20 +72,11 @@ export default class Content extends React.Component {
 
   };
 
+  //Dialog Method
 
-
-//Dialog Method
-
-handleClose() {
-  this.setState({open: false});
-};
-
-handleOnRequestClose() {
-  this.setState({open: false});
-};
-
-
-
+  handleClose() {
+    this.setState({open: false});
+  };
 
   render() {
     console.log("type of"+ this.state.assetObject.empNo);
@@ -82,7 +88,15 @@ handleOnRequestClose() {
                         {   marginLeft: 0,
                             backgroundColor:teal800
                         }
-    }
+    };
+
+    const actions = [
+      <FlatButton
+        label="Close"
+        primary={true}
+        onTouchTap={this.handleClose}
+      />,
+    ];
 
     return (
       <div>
@@ -96,21 +110,23 @@ handleOnRequestClose() {
           </ToolbarGroup>
         </Toolbar>
 
-        <Paper zDepth={2}>
-          <AssetTable assetlistArray={this.state.assetList} chosenAssetView={this.getAssetDetails} />
-           <Dialog
-           title="Asset Details"
-           contentStyle={customContentStyle}
-           titleStyle={{backgroundColor:orange800}}
-           modal={true}
-           open={this.state.open}
-           autoScrollBodyContent={true}
-           onRequestClose={this.handleOnRequestClose}
-           >
-          <AssetInfoDialog assetInfo={this.state.assetObject} />
-
-          </Dialog>
-        </Paper>
+        <div className="well">
+          <Paper zDepth={2}>
+            <AssetTable assetListArray={this.state.assetList} chosenAssetView={this.getAssetDetails} />
+            <Dialog
+              title="Asset Details"
+              contentStyle={customContentStyle}
+              titleStyle={{backgroundColor: green500, color: 'white'}}
+              modal={false}
+              actions={actions}
+              open={this.state.open}
+              autoScrollBodyContent={true}
+              onRequestClose={this.handleClose}
+            >
+                <AssetInfoDialog assetInfo={this.state.assetObject} />
+            </Dialog>
+          </Paper>
+        </div>
       </div>
     );
   }

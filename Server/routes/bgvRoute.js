@@ -1,12 +1,17 @@
 var express=require('express');
 var router=express.Router();
 var bgvDocument=require('../models/bgvDocument.js');
+var employee=require('../models/employee.js');
 
-router.get('/getBgvDetails',function(req,res)
+console.log("in routes----",employee);
+router.get('/getBgvDetails/:empNo',function(req,res)
 {
-  bgvDocument.getBgvDetails(employeeId,function(err,data)
+  bgvDocument.getBgvDetails(req.params.empNo,function(err,data)
   {
-    //write code here---------------
+    if(!err){
+      console.log("Get BGV Details: " + data);
+      res.send(data);
+    }
   })
 });
 
@@ -16,6 +21,19 @@ router.post('/modifyBgvDetails',function(req,res)
   {
     //write code her-------------
   })
+})
+
+router.post('/insertBgvDetails',function(req,res)
+{
+  bgvDocument.addBgvDetails(function(err,data)
+{
+  if(!err){
+
+    console.log("record is added");
+    res.send("inserted");
+
+  }
+});
 })
 
 module.exports=router;

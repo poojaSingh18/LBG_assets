@@ -2,11 +2,23 @@ var express=require('express');
 var router=express.Router();
 var visaDocument=require('../models/visaDocument.js');
 
-router.get('/getVisaDetails',function(req,res)
-{
-  visaDocument.getVisaDetails(employeeId,function(err,data)
+router.post('/insertVisaDetails',function(req,res)
   {
-    //write code here---------------
+    visaDocument.insertVisaDetails(function(err,callback)
+    {
+      if(!err)
+        console.log("visa details are inserted");
+    })
+  })
+
+router.get('/getVisaDetails/:empNo',function(req,res)
+{
+  visaDocument.getVisaDetails(req.params.empNo,function(err,data)
+  {
+    if(!err)
+    {
+      res.send(data);
+    }
   })
 });
 
