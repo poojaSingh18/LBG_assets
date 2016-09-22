@@ -1,9 +1,10 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import {cyan200, brown600, blue300} from 'material-ui/styles/colors';
+import {cyan200, brown600, lightBlue300} from 'material-ui/styles/colors';
+import AssetGeneralDetails from './assetGeneralDetails.jsx';
 import ThemeDetails from './themeDetails.jsx';
 import BgvDetails from './bgvDetails.jsx';
 import VisaDetails from './visaDetails.jsx';
@@ -32,7 +33,6 @@ export default class Content extends React.Component {
       visaData:{},
       qualificationData:{},
       digitalAcademyData: {},
-
     },
     this.handleThemeClick = this.handleThemeClick.bind(this);
     this.handleBgvClick = this.handleBgvClick.bind(this);
@@ -61,13 +61,13 @@ export default class Content extends React.Component {
     else{
       if(Object.keys(this.state.bgvData).length == 0){
         $.get('/bgvRoute/getBgvDetails/' + empNo, function(result){
-        this.setState({
-          bgvData: result,
-          bgvDivState: true,
-          themeDivState : false,
-          visaDivState:false,
-          qualificationDivState:false
-        })
+          this.setState({
+            bgvData: result,
+            bgvDivState: true,
+            themeDivState : false,
+            visaDivState:false,
+            qualificationDivState:false
+          })
         }.bind(this));
       }
       else{
@@ -109,7 +109,6 @@ export default class Content extends React.Component {
   };
 
   handleQualificationClick(empNo) {
-    console.log("handleQuaClick"+empNo);
     if(this.state.qualificationDivState){
       this.setState({qualificationDivState: false})
     }
@@ -139,9 +138,12 @@ export default class Content extends React.Component {
   };
 
   render(){
-    var avatarletter = (this.props.assetInfo.empName).substring(0,1).toUpperCase() + (this.props.assetInfo.empName).substring(1,2);
+    var avatarletterArray= (this.props.assetInfo.empName).split(' ');
+    var avatarletter= '';
+    avatarletterArray.forEach(function(name){
+      avatarletter+= name.substring(0,1).toUpperCase()
+    });
     var empname = (this.props.assetInfo.empName).toUpperCase();
-    console.log(this.props.assetInfo);
     return(
       <div style={styles.dialogcontent} >
           <Avatar
@@ -155,18 +157,11 @@ export default class Content extends React.Component {
           <label> {empname} </label>
 
           <div className="well">
-            <div><span><b>Employee No. :</b> </span> {this.props.assetInfo.empNo}</div><br/>
-            <div><span><b>Mentor :</b> </span> {this.props.assetInfo.mentor}</div><br/>
-            <div><span><b>Allocation Status :</b> </span> {this.props.assetInfo.allocationStatus}</div><br/>
-            <div><span><b>Employee Band :</b> </span> {this.props.assetInfo.empBand}</div><br/>
-            <div><span><b>Location :</b> </span> {this.props.assetInfo.location}</div><br/>
-            <div><span><b>Proposed Location :</b> </span> {this.props.assetInfo.proposedLocation}</div><br/>
-            <div><span><b>L1 Select:</b> </span> {this.props.assetInfo.l1_select}</div><br/>
-            <div><span><b>Deployment Ready Time Frame :</b> </span> {this.props.assetInfo.deploymentReadyTimeFrame}</div><br/>
+            <AssetGeneralDetails assetInfoProps={this.props.assetInfo} />
           </div>
           <div>
             <div>
-              <Toolbar style={{backgroundColor: blue300}}>
+              <Toolbar style={{backgroundColor: lightBlue300}}>
                 <ToolbarGroup>
                   <ToolbarTitle style={{color: 'black'}} text="Theme" />
                 </ToolbarGroup>
@@ -176,13 +171,13 @@ export default class Content extends React.Component {
               </Toolbar>
             </div>
             <div className={this.state.themeDivState ? 'active' : 'hidden'}>
-              <ThemeDetails themeProps={this.props.assetInfo.theme} />
+              <ThemeDetails themeProps={this.props.assetInfo} />
             </div>
           </div>
           <br />
           <div>
             <div>
-              <Toolbar style={{backgroundColor: blue300}}>
+              <Toolbar style={{backgroundColor: lightBlue300}}>
                 <ToolbarGroup>
                   <ToolbarTitle style={{color: 'black'}} text="Background Verification" />
                 </ToolbarGroup>
@@ -198,7 +193,7 @@ export default class Content extends React.Component {
           <br />
           <div>
             <div>
-              <Toolbar style={{backgroundColor: blue300}}>
+              <Toolbar style={{backgroundColor: lightBlue300}}>
                 <ToolbarGroup>
                   <ToolbarTitle style={{color: 'black'}} text="Visa Information" />
                 </ToolbarGroup>
@@ -214,7 +209,7 @@ export default class Content extends React.Component {
           <br />
           <div>
             <div>
-              <Toolbar style={{backgroundColor: blue300}}>
+              <Toolbar style={{backgroundColor: lightBlue300}}>
                 <ToolbarGroup>
                   <ToolbarTitle style={{color: 'black'}} text="Qualification Information" />
                 </ToolbarGroup>
@@ -224,7 +219,7 @@ export default class Content extends React.Component {
               </Toolbar>
             </div>
             <div className={this.state.qualificationDivState ? 'active' : 'hidden'}>
-              <QualificationDetails qualificationProps={this.state.qualificationData} digitalAcademyProps={this.state.digitalAcademyData} />
+              <QualificationDetails qualificationProps={this.state.qualificationData} />
             </div>
           </div>
       </div>

@@ -1,4 +1,5 @@
 var mongoose=require('mongoose');
+var getKeys=require('./getAllTheColumns.js');
 
 var visaShcema=mongoose.Schema({
     empNo: String,
@@ -15,29 +16,28 @@ var visaShcema=mongoose.Schema({
 visaShcema.statics.insertVisaDetails=function(callback)
 {
   this.create({
-    empNo: '326322',
-  	visaStatus:'completed',
-  	visaInitiated: '',
-  	visaType: 'long term',
-  	initialTravelValidity: '>1 year',
-  	plannedTravelDate: '12-09-2016',
-  	actualTravelDate: '12-09-2016',
+    empNo: '326805',
+  	visaStatus:'initiated',
+  	visaInitiated: 'initiated',
+  	visaType: '',
+  	initialTravelValidity: '> 1 year',
+  	plannedTravelDate: '21-10-2016',
+  	actualTravelDate: '',
   	ukProjectStartDate: ''
   },function(err,result)
   {
     if(!err)
       {
-        console.log("visa detials are inserted");
         callback(null,result)
       }
     else {
-        console.log("error----",err);
     }
   })
 }
 
 visaShcema.statics.getVisaDetails=function(empNo,callback)
 {
+
   this.findOne({
     "empNo":empNo
   },function(err,visaObject)
@@ -47,8 +47,43 @@ visaShcema.statics.getVisaDetails=function(empNo,callback)
         callback(null,visaObject);
       }
     else {
-      console.log(" error-",err);
+      callback(err,null);
     }
   })
+}
+
+visaShcema.statics.getVisaDocumentKeys=function(callback)
+{
+  this.findOne({
+
+  },function(err,data)
+  {
+    if(!err)
+    {
+      getKeys.getAllTheKeys({"collectionName":"visaKeys","data":data},function(err,result)
+        {
+          if(!err)
+            {
+              callback(null,result);
+            }
+            else {
+              callback(err,{});
+            }
+        })
+    }
+  });
+}
+
+visaShcema.statics.getAllTheRecords=function(object,callback)
+{
+  this.find({},
+    object,
+    function(err,allTheRecords)
+    {
+    if(!err)
+      callback(null,allTheRecords)
+    else
+      callback(err,{});
+    })
 }
 module.exports=mongoose.model('visaDocument',visaShcema,'visaDocuments');

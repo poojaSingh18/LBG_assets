@@ -36,5 +36,5 @@ export default class Header extends React.Component {
                        </Toolbar>
 
       );
-    }a
+    }
 }

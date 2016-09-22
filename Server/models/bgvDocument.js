@@ -1,7 +1,8 @@
 var mongoose=require('mongoose');
 var employee=require('./employee.js');
 var user=require('./user.js');
-console.log("employee.js------",employee,"user-------",user);
+var getKeys=require('./getAllTheColumns.js');
+
 var bgvSchema=mongoose.Schema({
     empNo:String,
     indent_Direct_Allocation: String,
@@ -16,34 +17,30 @@ var bgvSchema=mongoose.Schema({
   	desktopAvailable: String
 });
 
-
-
 bgvSchema.statics.addBgvDetails=function(callback)
   {
-  console.log("insdie model");
-  this.create({
-    empNo:"326322",
-    bgvRequested: "",
-    bgvInitiatedDate: "1-09-16",
-    bgvCompletionDate: "12-09-16",
-    bgvStatus: "completed",
-    bgvExpectedCompletionDate: "",
-    bgvRemarks:"Cleared on 12-09-16",
-    ct_id_Creation: "",
-    rsaToken: "",
-    desktopAvailable:""
-  },
-function(err,data)
-{
-  if(!err)
-  {
-
-  callback(null,data);
-  }
-  else {
-    console.log("err-----------",err);
-  }
-})
+    this.create({
+      empNo:"326805",
+      bgvRequested: "",
+      bgvInitiatedDate: "1-09-16",
+      bgvCompletionDate: "7-09-16",
+      bgvStatus: "completed",
+      bgvExpectedCompletionDate: "",
+      bgvRemarks:"Cleared on 7-09-16",
+      ct_id_Creation: "",
+      rsaToken: "",
+      desktopAvailable:""
+    },
+    function(err,data)
+    {
+      if(!err)
+      {
+        callback(null,data);
+      }
+      else {
+        console.log("err-----------",err);
+      }
+    })
 };
 
 //get bgvDetails based on employee number....
@@ -52,17 +49,39 @@ bgvSchema.statics.getBgvDetails=function(empNo,callback)
   this.findOne({
     "empNo":empNo
   },function(err,bgvObject)
+    {
+      if(!err)
+        {
+          callback(null,bgvObject);
+        }
+      else {
+        console.log("err---",err);
+        callback(err,null);
+      }
+    }
+  )
+}
+
+bgvSchema.statics.getBgvDocumentKeys=function(callback)
+{
+  this.findOne({
+
+  },function(err,data)
   {
     if(!err)
-      {
-        console.log("Model -- Get BGV Details : ", bgvObject);
-        callback(null,bgvObject);
-      }
-    else {
-      console.log("err---",err);
-      callback(err,null);
+    {
+      getKeys.getAllTheKeys({"collectionName":"bgvKeys","data":data},function(err,result)
+        {
+          if(!err)
+            {
+              callback(null,result);
+            }
+            else {
+              callback(err,{});
+            }
+        })
     }
-  })
+  });
 }
 
 bgvSchema.statics.updateBgvDetails=function(empNo,newBgvObject,callback)
@@ -74,5 +93,21 @@ bgvSchema.statics.updateBgvDetails=function(empNo,newBgvObject,callback)
   {
   //oldBgvObject.
   })
+}
+
+bgvSchema.statics.getAllTheRecords=function(object,callback)
+{
+
+    this.find({},
+      object,
+      function(err,allTheRecords)
+      {
+        if(!err)
+        {
+            callback(null,allTheRecords)
+        }
+        else
+          callback(err,{});
+      })
 }
 module.exports=mongoose.model('bgvDocument',bgvSchema,'bgvDocuments');

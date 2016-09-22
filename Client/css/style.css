@@ -18,6 +18,7 @@ body {
   border: 2px;
   margin-right: auto;
   margin-left: 40%;
+  text-align: center;
 
 }
 .breadColor{
@@ -135,6 +136,11 @@ body {
 
 #footerAsset{
   background-color: #006a4d;
+  position: absolute;
+   bottom: 0;
+   left: 0;
+   right: 0;
+
 
 }
 

@@ -6,7 +6,6 @@ export default class BgvDetails extends React.Component {
   };
 
   render() {
-    console.log(this.props.bgvProps);
     return (
       <div className="well">
         <div><span><b>BGV Requested :</b> </span> {this.props.bgvProps.bgvRequested}</div><br/>

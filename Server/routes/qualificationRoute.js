@@ -4,12 +4,11 @@ var qualificationDocument=require('../models/qualification.js');
 
 router.get('/getQualificationDetails/:empNo',function(req,res)
 {
-  console.log("indie qualif");
   qualificationDocument.getQualificationDetails(req.params.empNo,function(err,data)
   {
     if(!err)
     {
-      console.log(data);
+       (data);
       res.send(data);
     }
   })
@@ -29,7 +28,6 @@ router.post('/insetQualificationDetails',function(req,res)
     {
     if(!err)
       {
-        console.log("qualification detials are inserted");
         res.send("qualification is done");
       }
     })

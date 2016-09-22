@@ -6,7 +6,6 @@ export default class VisaDetails extends React.Component {
   };
 
   render() {
-    console.log(this.props.visaProps);
     return (
       <div className="well">
         <div><span><b>Visa Status:</b> </span> {this.props.visaProps.visaStatus}</div><br/>

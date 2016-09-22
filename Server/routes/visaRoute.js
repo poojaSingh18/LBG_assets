@@ -7,7 +7,7 @@ router.post('/insertVisaDetails',function(req,res)
     visaDocument.insertVisaDetails(function(err,callback)
     {
       if(!err)
-        console.log("visa details are inserted");
+         console.log("visa details are inserted");
     })
   })
 

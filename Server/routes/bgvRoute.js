@@ -3,13 +3,11 @@ var router=express.Router();
 var bgvDocument=require('../models/bgvDocument.js');
 var employee=require('../models/employee.js');
 
-console.log("in routes----",employee);
 router.get('/getBgvDetails/:empNo',function(req,res)
 {
   bgvDocument.getBgvDetails(req.params.empNo,function(err,data)
   {
     if(!err){
-      console.log("Get BGV Details: " + data);
       res.send(data);
     }
   })
@@ -29,7 +27,6 @@ router.post('/insertBgvDetails',function(req,res)
 {
   if(!err){
 
-    console.log("record is added");
     res.send("inserted");
 
   }
